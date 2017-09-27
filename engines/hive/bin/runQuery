@@ -118,12 +118,14 @@ runModule () {
       echo "hdfs client: hadoop fs"
        hadoop fs -rm -r -f -skipTrash "${RESULT_DIR}"
        hadoop fs -rm -r -f -skipTrash "${TEMP_DIR}"
-       hadoop fs -mkdir -p "${RESULT_DIR}"
-       hadoop fs -mkdir -p "${TEMP_DIR}"
-       hadoop fs -chmod ugo+rwx "${BIG_BENCH_HDFS_ABSOLUTE_TEMP_DIR}"
-       hadoop fs -chmod ugo+rwx "${BIG_BENCH_HDFS_ABSOLUTE_QUERY_RESULT_DIR}"
-       hadoop fs -chmod ugo+rwx "${RESULT_DIR}"
-       hadoop fs -chmod ugo+rwx "${TEMP_DIR}"
+       if [[ "${RESULT_DIR}" != *'s3a'* ]]; then
+         hadoop fs -mkdir -p "${RESULT_DIR}"
+         hadoop fs -mkdir -p "${TEMP_DIR}"
+         hadoop fs -chmod ugo+rwx "${BIG_BENCH_HDFS_ABSOLUTE_TEMP_DIR}"
+         hadoop fs -chmod ugo+rwx "${BIG_BENCH_HDFS_ABSOLUTE_QUERY_RESULT_DIR}"
+         hadoop fs -chmod ugo+rwx "${RESULT_DIR}"
+         hadoop fs -chmod ugo+rwx "${TEMP_DIR}"
+       fi
     fi
 
     local STOPDATE2="`date +%Y/%m/%d:%H:%M:%S`"
